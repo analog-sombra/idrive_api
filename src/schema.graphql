@@ -1,0 +1,136 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+input CreateUserInput {
+  address: String
+  contact1: String!
+  contact2: String
+  dob: DateTime
+  email: String
+  name: String!
+  otp: String
+  password: String
+  profile: String
+  role: Role
+  status: Status
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+input LoginUserInput {
+  contact: String!
+  password: String!
+}
+
+type Mutation {
+  createUser(inputType: CreateUserInput!): User!
+  deleteUser(id: Int!, userid: Int!): User!
+  optLogin(contact: String!): User!
+  signup(signUpUserInput: SignUpUserInput!): User!
+  updateUser(id: Int!, updateType: UpdateUserInput!): User!
+  verifyOtp(contact: String!, otp: String!): User!
+}
+
+type Query {
+  getAllUser(whereSearchInput: WhereUserSearchInput!): [User!]!
+  getPaginatedUser(searchPaginationInput: SearchPaginationInput!, whereSearchInput: WhereUserSearchInput!): UserPagination!
+  getUserById(id: Int!): User!
+  login(loginUserInput: LoginUserInput!): User!
+  searchUser(whereSearchInput: WhereUserSearchInput!): User
+}
+
+enum Role {
+  ADMIN
+  DRIVER
+  MT_ACCOUNTS
+  MT_ADMIN
+  MT_MANAGER
+  SYSTEM
+  USER
+}
+
+input SearchPaginationInput {
+  search: String
+  skip: Int!
+  take: Int!
+}
+
+input SignUpUserInput {
+  mobile: String!
+  name: String!
+  password: String!
+}
+
+enum Status {
+  ACTIVE
+  INACTIVE
+}
+
+input UpdateUserInput {
+  address: String
+  contact1: String
+  contact2: String
+  deletedAt: DateTime
+  dob: DateTime
+  email: String
+  name: String
+  otp: String
+  password: String
+  profile: String
+  role: Role
+  status: Status
+  updatedAt: DateTime
+}
+
+type User {
+  address: String
+  contact1: String!
+  contact2: String
+  createdAt: DateTime!
+  createdBy: User!
+  createdById: Int!
+  deletedAt: DateTime
+  deletedBy: User
+  deletedById: Int
+  dob: DateTime
+  email: String
+  id: Int!
+  name: String!
+  otp: String
+  password: String
+  profile: String
+  role: Role!
+  status: Status!
+  updatedAt: DateTime!
+  updatedBy: User
+  updatedById: Int
+}
+
+type UserPagination {
+  data: [User!]!
+  skip: Int!
+  take: Int!
+  total: Int!
+}
+
+input WhereUserSearchInput {
+  address: String
+  contact1: String
+  contact2: String
+  createdAt: DateTime
+  deletedAt: DateTime
+  dob: DateTime
+  email: String
+  id: String
+  name: String
+  otp: String
+  password: String
+  profile: String
+  role: Role
+  status: Status
+  updatedAt: DateTime
+}
