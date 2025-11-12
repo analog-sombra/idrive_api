@@ -1,14 +1,10 @@
 export default () => ({
-  port: parseInt(process.env.PORT || '9876', 10),
+  port: parseInt(process.env.PORT || '9997', 10),
   nodeEnv: process.env.NODE_ENV || 'development',
   database: {
     url: process.env.DATABASE_URL,
   },
-  cors: {
-    origins: process.env.ALLOWED_ORIGINS?.split(',') || [
-      'http://localhost:9876',
-    ],
-  },
+
   jwt: {
     secret: process.env.JWT_SECRET,
     expiresIn: process.env.JWT_EXPIRATION || '7d',

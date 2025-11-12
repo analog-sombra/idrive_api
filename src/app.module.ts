@@ -12,6 +12,7 @@ import configuration from './config/configuration.js';
 import { validationSchema } from './config/env.validation.js';
 import { AuthModule } from './auth/auth.module';
 import { UserModule } from './user/user.module';
+import { UploaderModule } from './uploader/uploader.module';
 
 @Module({
   imports: [
@@ -43,6 +44,7 @@ import { UserModule } from './user/user.module';
       rootPath: join(process.cwd(), 'public'),
     }),
     PrismaModule,
+    UploaderModule,
     AuthModule,
     UserModule,
   ],

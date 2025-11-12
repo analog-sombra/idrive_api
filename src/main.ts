@@ -18,12 +18,7 @@ async function bootstrap() {
 
   // Get ConfigService
   const configService = app.get(ConfigService);
-  const port = configService.get<number>('port', 9876);
-  // const allowedOrigins = configService.get<string[]>('cors.origins', [
-  //   'http://localhost:9876',
-  //   'http://192.168.0.210:3000',
-  //   'http://localhost:3000',
-  // ]);
+  const port = configService.get<number>('port', 9997);
 
   // Global Validation Pipe
   app.useGlobalPipes(

@@ -5,13 +5,10 @@ export const validationSchema = Joi.object({
   NODE_ENV: Joi.string()
     .valid('development', 'production', 'test', 'staging')
     .default('development'),
-  PORT: Joi.number().default(9876),
+  PORT: Joi.number().default(9997),
 
   // Database
   DATABASE_URL: Joi.string().required(),
-
-  // CORS
-  ALLOWED_ORIGINS: Joi.string().default('http://localhost:9876'),
 
   // JWT (optional for now, will be required when implementing auth)
   JWT_SECRET: Joi.string().optional(),
