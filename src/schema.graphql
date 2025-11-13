@@ -2,6 +2,39 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
+input CreateSchoolInput {
+  accountNumber: String
+  address: String!
+  alternatePhone: String
+  bankName: String
+  branchName: String
+  dayEndTime: String
+  dayStartTime: String
+  email: String!
+  establishedYear: String!
+  facebook: String
+  gstNumber: String!
+  ifscCode: String
+  instagram: String
+  insuranceExpiry: DateTime
+  insurancePolicyNumber: String
+  insuranceProvider: String
+  logo: String
+  lunchEndTime: String
+  lunchStartTime: String
+  name: String!
+  ownerEmail: String
+  ownerName: String
+  ownerPhone: String
+  phone: String!
+  registrationNumber: String!
+  rtoLicenseExpiry: DateTime
+  rtoLicenseNumber: String
+  twitter: String
+  website: String!
+  weeklyHoliday: String
+}
+
 input CreateUserInput {
   address: String
   contact1: String!
@@ -27,19 +60,26 @@ input LoginUserInput {
 }
 
 type Mutation {
+  createSchool(inputType: CreateSchoolInput!): School!
   createUser(inputType: CreateUserInput!): User!
+  deleteSchool(id: Int!, userid: Int!): School!
   deleteUser(id: Int!, userid: Int!): User!
   optLogin(contact: String!): User!
   signup(signUpUserInput: SignUpUserInput!): User!
+  updateSchool(id: Int!, updateType: UpdateSchoolInput!): School!
   updateUser(id: Int!, updateType: UpdateUserInput!): User!
   verifyOtp(contact: String!, otp: String!): User!
 }
 
 type Query {
+  getAllSchool(whereSearchInput: WhereSchoolSearchInput!): [School!]!
   getAllUser(whereSearchInput: WhereUserSearchInput!): [User!]!
+  getPaginatedSchool(searchPaginationInput: SearchPaginationInput!, whereSearchInput: WhereSchoolSearchInput!): SchoolPagination!
   getPaginatedUser(searchPaginationInput: SearchPaginationInput!, whereSearchInput: WhereUserSearchInput!): UserPagination!
+  getSchoolById(id: Int!): School!
   getUserById(id: Int!): User!
   login(loginUserInput: LoginUserInput!): User!
+  searchSchool(whereSearchInput: WhereSchoolSearchInput!): School
   searchUser(whereSearchInput: WhereUserSearchInput!): User
 }
 
@@ -51,6 +91,58 @@ enum Role {
   MT_MANAGER
   SYSTEM
   USER
+}
+
+type School {
+  accountNumber: String
+  address: String!
+  alternatePhone: String
+  bankName: String
+  branchName: String
+  createdAt: DateTime!
+  dayEndTime: String
+  dayStartTime: String
+  deletedAt: DateTime
+  email: String!
+  establishedYear: String!
+  facebook: String
+  gstNumber: String!
+  id: Int!
+  ifscCode: String
+  instagram: String
+  insuranceExpiry: DateTime
+  insurancePolicyNumber: String
+  insuranceProvider: String
+  logo: String
+  lunchEndTime: String
+  lunchStartTime: String
+  name: String!
+  ownerEmail: String
+  ownerName: String
+  ownerPhone: String
+  phone: String!
+  registrationNumber: String!
+  rtoLicenseExpiry: DateTime
+  rtoLicenseNumber: String
+  status: SchoolStatus!
+  twitter: String
+  updatedAt: DateTime!
+  users: [User!]
+  website: String!
+  weeklyHoliday: String
+}
+
+type SchoolPagination {
+  data: [School!]!
+  skip: Int!
+  take: Int!
+  total: Int!
+}
+
+enum SchoolStatus {
+  ACTIVE
+  INACTIVE
+  SUSPENDED
 }
 
 input SearchPaginationInput {
@@ -68,6 +160,41 @@ input SignUpUserInput {
 enum Status {
   ACTIVE
   INACTIVE
+}
+
+input UpdateSchoolInput {
+  accountNumber: String
+  address: String
+  alternatePhone: String
+  bankName: String
+  branchName: String
+  dayEndTime: String
+  dayStartTime: String
+  email: String
+  establishedYear: String
+  facebook: String
+  gstNumber: String
+  id: Int!
+  ifscCode: String
+  instagram: String
+  insuranceExpiry: DateTime
+  insurancePolicyNumber: String
+  insuranceProvider: String
+  logo: String
+  lunchEndTime: String
+  lunchStartTime: String
+  name: String
+  ownerEmail: String
+  ownerName: String
+  ownerPhone: String
+  phone: String
+  registrationNumber: String
+  rtoLicenseExpiry: DateTime
+  rtoLicenseNumber: String
+  status: String
+  twitter: String
+  website: String
+  weeklyHoliday: String
 }
 
 input UpdateUserInput {
@@ -115,6 +242,27 @@ type UserPagination {
   skip: Int!
   take: Int!
   total: Int!
+}
+
+input WhereSchoolSearchInput {
+  address: String
+  alternatePhone: String
+  bankName: String
+  email: String
+  establishedYear: String
+  gstNumber: String
+  ifscCode: String
+  insuranceProvider: String
+  name: String
+  ownerEmail: String
+  ownerName: String
+  ownerPhone: String
+  phone: String
+  registrationNumber: String
+  rtoLicenseNumber: String
+  status: String
+  website: String
+  weeklyHoliday: String
 }
 
 input WhereUserSearchInput {

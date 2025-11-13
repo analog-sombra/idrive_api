@@ -13,6 +13,7 @@ import { validationSchema } from './config/env.validation.js';
 import { AuthModule } from './auth/auth.module';
 import { UserModule } from './user/user.module';
 import { UploaderModule } from './uploader/uploader.module';
+import { SchoolModule } from './school/school.module';
 
 @Module({
   imports: [
@@ -47,6 +48,7 @@ import { UploaderModule } from './uploader/uploader.module';
     UploaderModule,
     AuthModule,
     UserModule,
+    SchoolModule,
   ],
   controllers: [AppController],
   providers: [AppService],

@@ -44,4 +44,64 @@ model user {
   createdAt       DateTime  @default(now())
   updatedAt       DateTime  @updatedAt
   deletedAt       DateTime?
+  schoolId        Int?
+  school          school?   @relation(fields: [schoolId], references: [id])
+}
+
+enum SchoolStatus {
+  ACTIVE
+  INACTIVE
+  SUSPENDED
+}
+
+model school {
+  id                      Int            @id @default(autoincrement())
+  name                    String
+  email                   String         @unique
+  phone                   String
+  alternatePhone          String?
+  address                 String         @db.LongText
+  registrationNumber      String         @unique
+  gstNumber               String         @unique
+  establishedYear         String
+  website                 String
+  logo                    String?
+  
+  // Operating Hours
+  dayStartTime            String?
+  dayEndTime              String?
+  lunchStartTime          String?
+  lunchEndTime            String?
+  weeklyHoliday           String?
+  
+  // Owner/Contact Person
+  ownerName               String?
+  ownerPhone              String?
+  ownerEmail              String?
+  
+  // Bank Details
+  bankName                String?
+  accountNumber           String?
+  ifscCode                String?
+  branchName              String?
+  
+  // License & Certifications
+  rtoLicenseNumber        String?
+  rtoLicenseExpiry        DateTime?
+  insuranceProvider       String?
+  insurancePolicyNumber   String?
+  insuranceExpiry         DateTime?
+  
+  // Social Media
+  facebook                String?
+  instagram               String?
+  twitter                 String?
+  
+  status                  SchoolStatus   @default(ACTIVE)
+  createdAt               DateTime       @default(now())
+  updatedAt               DateTime       @updatedAt
+  deletedAt               DateTime?
+  
+  // Relations
+  users                   user[]
 }
