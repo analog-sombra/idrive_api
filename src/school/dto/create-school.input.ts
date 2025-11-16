@@ -39,20 +39,20 @@ export class CreateSchoolInput {
   @Field(() => String)
   registrationNumber: string;
 
-  @IsNotEmpty()
+  @IsOptional()
   @IsString()
-  @Field(() => String)
-  gstNumber: string;
+  @Field(() => String, { nullable: true })
+  gstNumber?: string;
 
   @IsNotEmpty()
   @IsString()
   @Field(() => String)
   establishedYear: string;
 
-  @IsNotEmpty()
+  @IsOptional()
   @IsUrl()
-  @Field(() => String)
-  website: string;
+  @Field(() => String, { nullable: true })
+  website?: string;
 
   @IsOptional()
   @IsString()

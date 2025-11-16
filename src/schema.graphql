@@ -2,6 +2,206 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
+type Car {
+  assignedDriverId: Int
+  carId: String!
+  carName: String!
+  chassisNumber: String
+  color: String!
+  createdAt: DateTime!
+  currentMileage: Int!
+  deletedAt: DateTime
+  engineNumber: String
+  fitnessExpiry: DateTime
+  fuelType: FuelType!
+  id: Int!
+  insuranceExpiry: DateTime
+  insuranceNumber: String
+  lastServiceDate: DateTime
+  model: String!
+  nextServiceDate: DateTime
+  pucExpiry: DateTime
+  purchaseCost: Float
+  purchaseDate: DateTime
+  registrationNumber: String!
+  school: School
+  schoolId: Int!
+  seatingCapacity: Int!
+  status: CarStatus!
+  totalBookings: Int!
+  transmission: TransmissionType!
+  updatedAt: DateTime!
+  year: Int!
+}
+
+type CarPagination {
+  data: [Car!]!
+  skip: Int!
+  take: Int!
+  total: Int!
+}
+
+enum CarStatus {
+  AVAILABLE
+  INACTIVE
+  IN_USE
+  MAINTENANCE
+}
+
+type Course {
+  courseDays: Int!
+  courseId: String!
+  courseName: String!
+  courseType: CourseType!
+  createdAt: DateTime!
+  deletedAt: DateTime
+  description: String!
+  enrolledStudents: Int!
+  hoursPerDay: Int!
+  id: Int!
+  price: Float!
+  requirements: String
+  school: School
+  schoolId: Int!
+  sessionsCompleted: Int!
+  status: CourseStatus!
+  syllabus: String
+  totalRevenue: Float!
+  updatedAt: DateTime!
+}
+
+type CoursePagination {
+  data: [Course!]!
+  skip: Int!
+  take: Int!
+  total: Int!
+}
+
+enum CourseStatus {
+  ACTIVE
+  ARCHIVED
+  INACTIVE
+  UPCOMING
+}
+
+enum CourseType {
+  ADVANCED
+  BEGINNER
+  INTERMEDIATE
+  REFRESHER
+}
+
+input CreateCarInput {
+  assignedDriverId: Int
+  carId: String!
+  carName: String!
+  chassisNumber: String
+  color: String!
+  currentMileage: Int = 0
+  engineNumber: String
+  fitnessExpiry: DateTime
+  fuelType: FuelType!
+  insuranceExpiry: DateTime
+  insuranceNumber: String
+  lastServiceDate: DateTime
+  model: String!
+  nextServiceDate: DateTime
+  pucExpiry: DateTime
+  purchaseCost: Float
+  purchaseDate: DateTime
+  registrationNumber: String!
+  schoolId: Int!
+  seatingCapacity: Int = 5
+  status: CarStatus = AVAILABLE
+  transmission: TransmissionType!
+  year: Int!
+}
+
+input CreateCourseInput {
+  courseDays: Int!
+  courseId: String!
+  courseName: String!
+  courseType: CourseType!
+  description: String!
+  enrolledStudents: Int = 0
+  hoursPerDay: Int!
+  price: Float!
+  requirements: String
+  schoolId: Int!
+  sessionsCompleted: Int = 0
+  status: CourseStatus = ACTIVE
+  syllabus: String
+  totalRevenue: Float = 0
+}
+
+input CreateDriverInput {
+  address: String!
+  alternatePhone: String
+  bloodGroup: String
+  cancelledBookings: Int = 0
+  completedBookings: Int = 0
+  dateOfBirth: DateTime!
+  driverId: String!
+  email: String!
+  emergencyContactName: String
+  emergencyContactNumber: String
+  emergencyContactRelation: String
+  experience: Int = 0
+  gender: String!
+  joiningDate: DateTime
+  licenseExpiryDate: DateTime!
+  licenseIssueDate: DateTime!
+  licenseNumber: String!
+  licenseType: String!
+  mobile: String!
+  name: String!
+  rating: Float = 0
+  salary: Float = 0
+  schoolId: Int!
+  totalBookings: Int = 0
+  userId: Int!
+}
+
+input CreateHolidayInput {
+  carId: Int
+  declarationType: String!
+  endDate: String!
+  reason: String!
+  schoolId: Int!
+  slots: String
+  startDate: String!
+}
+
+input CreateLeaveHistoryInput {
+  approvedAt: DateTime
+  approvedBy: Int
+  driverId: Int!
+  fromDate: DateTime!
+  leaveId: String!
+  leaveType: String
+  reason: String!
+  rejectionReason: String
+  toDate: DateTime!
+  totalDays: Int!
+}
+
+input CreateSalaryHistoryInput {
+  basicSalary: Float!
+  bonus: Float = 0
+  deductions: Float = 0
+  driverId: Int!
+  month: String!
+  monthNumber: Int!
+  netSalary: Float!
+  paidBy: Int
+  paidOn: DateTime
+  paymentMethod: String
+  remarks: String
+  salaryId: String!
+  transactionId: String
+  year: Int!
+}
+
 input CreateSchoolInput {
   accountNumber: String
   address: String!
@@ -13,7 +213,7 @@ input CreateSchoolInput {
   email: String!
   establishedYear: String!
   facebook: String
-  gstNumber: String!
+  gstNumber: String
   ifscCode: String
   instagram: String
   insuranceExpiry: DateTime
@@ -31,8 +231,38 @@ input CreateSchoolInput {
   rtoLicenseExpiry: DateTime
   rtoLicenseNumber: String
   twitter: String
-  website: String!
+  website: String
   weeklyHoliday: String
+}
+
+input CreateServiceInput {
+  activeUsers: Int
+  category: String!
+  description: String!
+  duration: Int!
+  features: String
+  includedServices: String
+  price: Float!
+  requirements: String
+  schoolId: Int!
+  serviceId: String!
+  serviceName: String!
+  serviceType: ServiceType!
+  status: ServiceStatus
+  termsAndConditions: String
+  totalRevenue: Float
+}
+
+input CreateSyllabusInput {
+  assessmentCriteria: String
+  courseId: Int!
+  dayNumber: Int!
+  notes: String
+  objectives: String
+  practicalActivities: String
+  syllabusId: String!
+  title: String!
+  topics: String!
 }
 
 input CreateUserInput {
@@ -46,6 +276,7 @@ input CreateUserInput {
   password: String
   profile: String
   role: Role
+  schoolId: Float
   status: Status
 }
 
@@ -54,32 +285,217 @@ A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date
 """
 scalar DateTime
 
+type Driver {
+  address: String!
+  alternatePhone: String
+  bloodGroup: String
+  cancelledBookings: Int!
+  completedBookings: Int!
+  createdAt: DateTime!
+  dateOfBirth: DateTime!
+  deletedAt: DateTime
+  driverId: String!
+  email: String!
+  emergencyContactName: String
+  emergencyContactNumber: String
+  emergencyContactRelation: String
+  experience: Int!
+  gender: String!
+  id: Int!
+  joiningDate: DateTime!
+  leaveHistory: [LeaveHistory!]
+  licenseExpiryDate: DateTime!
+  licenseIssueDate: DateTime!
+  licenseNumber: String!
+  licenseType: String!
+  mobile: String!
+  name: String!
+  rating: Float!
+  salary: Float!
+  salaryHistory: [SalaryHistory!]
+  school: School
+  schoolId: Int!
+  status: DriverStatus!
+  totalBookings: Int!
+  updatedAt: DateTime!
+  user: User
+  userId: Int!
+}
+
+type DriverPagination {
+  data: [Driver!]!
+  skip: Int!
+  take: Int!
+  total: Int!
+}
+
+enum DriverStatus {
+  ACTIVE
+  INACTIVE
+  ON_LEAVE
+  SUSPENDED
+}
+
+enum FuelType {
+  CNG
+  DIESEL
+  ELECTRIC
+  HYBRID
+  PETROL
+}
+
+type Holiday {
+  car: Car
+  carId: Int
+  createdAt: DateTime!
+  declarationType: HolidayDeclarationType!
+  deletedAt: DateTime
+  endDate: DateTime!
+  id: Int!
+  reason: String!
+  school: School
+  schoolId: Int!
+  slots: [String!]
+  startDate: DateTime!
+  status: HolidayStatus!
+  updatedAt: DateTime!
+}
+
+enum HolidayDeclarationType {
+  ALL_CARS_MULTIPLE_DATES
+  ALL_CARS_PARTICULAR_SLOTS
+  ONE_CAR_MULTIPLE_DATES
+  ONE_CAR_PARTICULAR_SLOTS
+}
+
+type HolidayPagination {
+  data: [Holiday!]!
+  skip: Int!
+  take: Int!
+  total: Int!
+}
+
+enum HolidayStatus {
+  ACTIVE
+  CANCELLED
+  EXPIRED
+  UPCOMING
+}
+
+type LeaveHistory {
+  approvedAt: DateTime
+  approvedBy: Int
+  createdAt: DateTime!
+  driver: Driver
+  driverId: Int!
+  fromDate: DateTime!
+  id: Int!
+  leaveId: String!
+  leaveType: String
+  reason: String!
+  rejectionReason: String
+  status: LeaveStatus!
+  toDate: DateTime!
+  totalDays: Int!
+  updatedAt: DateTime!
+}
+
+type LeaveHistoryPagination {
+  data: [LeaveHistory!]!
+  skip: Int!
+  take: Int!
+  total: Int!
+}
+
+enum LeaveStatus {
+  APPROVED
+  CANCELLED
+  PENDING
+  REJECTED
+}
+
 input LoginUserInput {
   contact: String!
   password: String!
 }
 
 type Mutation {
+  createCar(inputType: CreateCarInput!): Car!
+  createCourse(inputType: CreateCourseInput!): Course!
+  createDriver(inputType: CreateDriverInput!): Driver!
+  createHoliday(inputType: CreateHolidayInput!): Holiday!
+  createLeaveHistory(inputType: CreateLeaveHistoryInput!): LeaveHistory!
+  createSalaryHistory(inputType: CreateSalaryHistoryInput!): SalaryHistory!
   createSchool(inputType: CreateSchoolInput!): School!
+  createService(inputType: CreateServiceInput!): Service!
+  createSyllabus(inputType: CreateSyllabusInput!): Syllabus!
   createUser(inputType: CreateUserInput!): User!
+  deleteCar(id: Int!, userid: Int!): Car!
+  deleteCourse(id: Int!, userid: Int!): Course!
+  deleteDriver(id: Int!, userid: Int!): Driver!
+  deleteHoliday(id: Int!, userid: Int!): Holiday!
+  deleteLeaveHistory(id: Int!, userid: Int!): LeaveHistory!
+  deleteSalaryHistory(id: Int!, userid: Int!): SalaryHistory!
   deleteSchool(id: Int!, userid: Int!): School!
+  deleteService(id: Int!, userid: Int!): Service!
+  deleteSyllabus(id: Int!, userid: Int!): Syllabus!
   deleteUser(id: Int!, userid: Int!): User!
   optLogin(contact: String!): User!
   signup(signUpUserInput: SignUpUserInput!): User!
+  updateCar(id: Int!, updateType: UpdateCarInput!): Car!
+  updateCourse(id: Int!, updateType: UpdateCourseInput!): Course!
+  updateDriver(id: Int!, updateType: UpdateDriverInput!): Driver!
+  updateHoliday(id: Int!, updateType: UpdateHolidayInput!): Holiday!
+  updateLeaveHistory(id: Int!, updateType: UpdateLeaveHistoryInput!): LeaveHistory!
+  updateSalaryHistory(id: Int!, updateType: UpdateSalaryHistoryInput!): SalaryHistory!
   updateSchool(id: Int!, updateType: UpdateSchoolInput!): School!
+  updateService(id: Int!, updateType: UpdateServiceInput!): Service!
+  updateSyllabus(id: Int!, updateType: UpdateSyllabusInput!): Syllabus!
   updateUser(id: Int!, updateType: UpdateUserInput!): User!
   verifyOtp(contact: String!, otp: String!): User!
 }
 
 type Query {
+  getAllCar(whereSearchInput: SearchCarInput!): [Car!]!
+  getAllCourse(whereSearchInput: SearchCourseInput!): [Course!]!
+  getAllDriver(whereSearchInput: WhereDriverSearchInput!): [Driver!]!
+  getAllHoliday(whereSearchInput: SearchHolidayInput!): [Holiday!]!
+  getAllLeaveHistory(whereSearchInput: WhereLeaveHistorySearchInput!): [LeaveHistory!]!
+  getAllSalaryHistory(whereSearchInput: WhereSalaryHistorySearchInput!): [SalaryHistory!]!
   getAllSchool(whereSearchInput: WhereSchoolSearchInput!): [School!]!
+  getAllService(whereSearchInput: WhereServiceSearchInput!): [Service!]!
+  getAllSyllabus(whereSearchInput: SearchSyllabusInput!): [Syllabus!]!
   getAllUser(whereSearchInput: WhereUserSearchInput!): [User!]!
+  getCarById(id: Int!): Car!
+  getCourseById(id: Int!): Course!
+  getDriverById(id: Int!): Driver!
+  getHolidayById(id: Int!): Holiday!
+  getLeaveHistoryById(id: Int!): LeaveHistory!
+  getPaginatedCar(searchPaginationInput: SearchPaginationInput!, whereSearchInput: SearchCarInput!): CarPagination!
+  getPaginatedCourse(searchPaginationInput: SearchPaginationInput!, whereSearchInput: SearchCourseInput!): CoursePagination!
+  getPaginatedDriver(searchPaginationInput: SearchPaginationInput!, whereSearchInput: WhereDriverSearchInput!): DriverPagination!
+  getPaginatedHoliday(searchPaginationInput: SearchPaginationInput!, whereSearchInput: SearchHolidayInput!): HolidayPagination!
+  getPaginatedLeaveHistory(searchPaginationInput: SearchPaginationInput!, whereSearchInput: WhereLeaveHistorySearchInput!): LeaveHistoryPagination!
+  getPaginatedSalaryHistory(searchPaginationInput: SearchPaginationInput!, whereSearchInput: WhereSalaryHistorySearchInput!): SalaryHistoryPagination!
   getPaginatedSchool(searchPaginationInput: SearchPaginationInput!, whereSearchInput: WhereSchoolSearchInput!): SchoolPagination!
+  getPaginatedService(searchPaginationInput: SearchPaginationInput!, whereSearchInput: WhereServiceSearchInput!): ServicePagination!
+  getPaginatedSyllabus(searchPaginationInput: SearchPaginationInput!, whereSearchInput: SearchSyllabusInput!): SyllabusPagination!
   getPaginatedUser(searchPaginationInput: SearchPaginationInput!, whereSearchInput: WhereUserSearchInput!): UserPagination!
+  getSalaryHistoryById(id: Int!): SalaryHistory!
   getSchoolById(id: Int!): School!
+  getServiceById(id: Int!): Service!
+  getSyllabusById(id: Int!): Syllabus!
   getUserById(id: Int!): User!
   login(loginUserInput: LoginUserInput!): User!
+  searchCar(whereSearchInput: SearchCarInput!): Car
+  searchCourse(whereSearchInput: SearchCourseInput!): Course
+  searchDriver(whereSearchInput: WhereDriverSearchInput!): Driver
+  searchHoliday(whereSearchInput: SearchHolidayInput!): Holiday
+  searchLeaveHistory(whereSearchInput: WhereLeaveHistorySearchInput!): LeaveHistory
+  searchSalaryHistory(whereSearchInput: WhereSalaryHistorySearchInput!): SalaryHistory
   searchSchool(whereSearchInput: WhereSchoolSearchInput!): School
+  searchService(whereSearchInput: WhereServiceSearchInput!): Service
+  searchSyllabus(whereSearchInput: SearchSyllabusInput!): Syllabus
   searchUser(whereSearchInput: WhereUserSearchInput!): User
 }
 
@@ -91,6 +507,41 @@ enum Role {
   MT_MANAGER
   SYSTEM
   USER
+}
+
+type SalaryHistory {
+  basicSalary: Float!
+  bonus: Float!
+  createdAt: DateTime!
+  deductions: Float!
+  driver: Driver
+  driverId: Int!
+  id: Int!
+  month: String!
+  monthNumber: Int!
+  netSalary: Float!
+  paidBy: Int
+  paidOn: DateTime
+  paymentMethod: String
+  remarks: String
+  salaryId: String!
+  status: SalaryStatus!
+  transactionId: String
+  updatedAt: DateTime!
+  year: Int!
+}
+
+type SalaryHistoryPagination {
+  data: [SalaryHistory!]!
+  skip: Int!
+  take: Int!
+  total: Int!
+}
+
+enum SalaryStatus {
+  PAID
+  PENDING
+  PROCESSING
 }
 
 type School {
@@ -145,10 +596,85 @@ enum SchoolStatus {
   SUSPENDED
 }
 
+input SearchCarInput {
+  assignedDriverId: Int
+  fuelType: FuelType
+  schoolId: Int
+  search: String
+  status: CarStatus
+}
+
+input SearchCourseInput {
+  courseId: String
+  courseName: String
+  courseType: CourseType
+  schoolId: Int
+  status: CourseStatus
+}
+
+input SearchHolidayInput {
+  carId: Int
+  declarationType: String
+  endDate: String
+  reason: String
+  schoolId: Int
+  startDate: String
+  status: String
+}
+
 input SearchPaginationInput {
   search: String
   skip: Int!
   take: Int!
+}
+
+input SearchSyllabusInput {
+  courseId: Int
+  dayNumber: Int
+  syllabusId: String
+  title: String
+}
+
+type Service {
+  activeUsers: Int!
+  category: String!
+  createdAt: DateTime!
+  deletedAt: DateTime
+  description: String!
+  duration: Int!
+  features: String
+  id: Int!
+  includedServices: String
+  price: Float!
+  requirements: String
+  school: School
+  schoolId: Int!
+  serviceId: String!
+  serviceName: String!
+  serviceType: ServiceType!
+  status: ServiceStatus!
+  termsAndConditions: String
+  totalRevenue: Float!
+  updatedAt: DateTime!
+}
+
+type ServicePagination {
+  data: [Service!]!
+  skip: Int!
+  take: Int!
+  total: Int!
+}
+
+enum ServiceStatus {
+  ACTIVE
+  DISCONTINUED
+  INACTIVE
+  UPCOMING
+}
+
+enum ServiceType {
+  ADDON
+  LICENSE
 }
 
 input SignUpUserInput {
@@ -160,6 +686,151 @@ input SignUpUserInput {
 enum Status {
   ACTIVE
   INACTIVE
+}
+
+type Syllabus {
+  assessmentCriteria: String
+  course: Course
+  courseId: Int!
+  createdAt: DateTime!
+  dayNumber: Int!
+  deletedAt: DateTime
+  id: Int!
+  notes: String
+  objectives: String
+  practicalActivities: String
+  syllabusId: String!
+  title: String!
+  topics: String!
+  updatedAt: DateTime!
+}
+
+type SyllabusPagination {
+  data: [Syllabus!]!
+  skip: Int!
+  take: Int!
+  total: Int!
+}
+
+enum TransmissionType {
+  AMT
+  AUTOMATIC
+  CVT
+  MANUAL
+}
+
+input UpdateCarInput {
+  assignedDriverId: Int
+  carId: String
+  carName: String
+  chassisNumber: String
+  color: String
+  currentMileage: Int
+  engineNumber: String
+  fitnessExpiry: DateTime
+  fuelType: FuelType
+  id: Int!
+  insuranceExpiry: DateTime
+  insuranceNumber: String
+  lastServiceDate: DateTime
+  model: String
+  nextServiceDate: DateTime
+  pucExpiry: DateTime
+  purchaseCost: Float
+  purchaseDate: DateTime
+  registrationNumber: String
+  schoolId: Int
+  seatingCapacity: Int
+  status: CarStatus
+  totalBookings: Int
+  transmission: TransmissionType
+  year: Int
+}
+
+input UpdateCourseInput {
+  courseDays: Int
+  courseId: String
+  courseName: String
+  courseType: CourseType
+  description: String
+  enrolledStudents: Int
+  hoursPerDay: Int
+  id: Int!
+  price: Float
+  requirements: String
+  schoolId: Int
+  sessionsCompleted: Int
+  status: CourseStatus
+  syllabus: String
+  totalRevenue: Float
+}
+
+input UpdateDriverInput {
+  address: String
+  alternatePhone: String
+  bloodGroup: String
+  cancelledBookings: Int
+  completedBookings: Int
+  dateOfBirth: DateTime
+  email: String
+  emergencyContactName: String
+  emergencyContactNumber: String
+  emergencyContactRelation: String
+  experience: Int
+  gender: String
+  id: Int!
+  joiningDate: DateTime
+  licenseExpiryDate: DateTime
+  licenseIssueDate: DateTime
+  licenseNumber: String
+  licenseType: String
+  mobile: String
+  name: String
+  rating: Float
+  salary: Float
+  status: DriverStatus
+  totalBookings: Int
+}
+
+input UpdateHolidayInput {
+  carId: Int
+  declarationType: String
+  endDate: String
+  reason: String
+  schoolId: Int
+  slots: String
+  startDate: String
+  status: String
+}
+
+input UpdateLeaveHistoryInput {
+  approvedAt: DateTime
+  approvedBy: Int
+  fromDate: DateTime
+  id: Int!
+  leaveType: String
+  reason: String
+  rejectionReason: String
+  status: LeaveStatus
+  toDate: DateTime
+  totalDays: Int
+}
+
+input UpdateSalaryHistoryInput {
+  basicSalary: Float
+  bonus: Float
+  deductions: Float
+  id: Int!
+  month: String
+  monthNumber: Int
+  netSalary: Float
+  paidBy: Int
+  paidOn: DateTime
+  paymentMethod: String
+  remarks: String
+  status: SalaryStatus
+  transactionId: String
+  year: Int
 }
 
 input UpdateSchoolInput {
@@ -197,6 +868,37 @@ input UpdateSchoolInput {
   weeklyHoliday: String
 }
 
+input UpdateServiceInput {
+  activeUsers: Int
+  category: String
+  description: String
+  duration: Int
+  features: String
+  includedServices: String
+  price: Float
+  requirements: String
+  schoolId: Int
+  serviceId: String
+  serviceName: String
+  serviceType: ServiceType
+  status: ServiceStatus
+  termsAndConditions: String
+  totalRevenue: Float
+}
+
+input UpdateSyllabusInput {
+  assessmentCriteria: String
+  courseId: Int
+  dayNumber: Int
+  id: Int!
+  notes: String
+  objectives: String
+  practicalActivities: String
+  syllabusId: String
+  title: String
+  topics: String
+}
+
 input UpdateUserInput {
   address: String
   contact1: String
@@ -209,6 +911,7 @@ input UpdateUserInput {
   password: String
   profile: String
   role: Role
+  schoolId: Float
   status: Status
   updatedAt: DateTime
 }
@@ -231,6 +934,8 @@ type User {
   password: String
   profile: String
   role: Role!
+  school: School
+  schoolId: Int
   status: Status!
   updatedAt: DateTime!
   updatedBy: User
@@ -242,6 +947,38 @@ type UserPagination {
   skip: Int!
   take: Int!
   total: Int!
+}
+
+input WhereDriverSearchInput {
+  driverId: String
+  email: String
+  id: Int
+  licenseNumber: String
+  mobile: String
+  name: String
+  schoolId: Int
+  search: String
+  status: DriverStatus
+  userId: Int
+}
+
+input WhereLeaveHistorySearchInput {
+  driverId: Int
+  id: Int
+  leaveId: String
+  leaveType: String
+  search: String
+  status: LeaveStatus
+}
+
+input WhereSalaryHistorySearchInput {
+  driverId: Int
+  id: Int
+  month: String
+  salaryId: String
+  search: String
+  status: SalaryStatus
+  year: Int
 }
 
 input WhereSchoolSearchInput {
@@ -265,6 +1002,12 @@ input WhereSchoolSearchInput {
   weeklyHoliday: String
 }
 
+input WhereServiceSearchInput {
+  schoolId: Int
+  serviceType: ServiceType
+  status: ServiceStatus
+}
+
 input WhereUserSearchInput {
   address: String
   contact1: String
@@ -279,6 +1022,7 @@ input WhereUserSearchInput {
   password: String
   profile: String
   role: Role
+  schoolId: Float
   status: Status
   updatedAt: DateTime
 }

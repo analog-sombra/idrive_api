@@ -7,7 +7,7 @@ export class SearchPaginationInput {
   @Field(() => Int)
   skip: number;
 
-  @IsString()
+  @IsNumber()
   @Field(() => Int)
   take: number;
 

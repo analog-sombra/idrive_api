@@ -28,6 +28,48 @@ enum Status {
   INACTIVE
 }
 
+enum DriverStatus {
+  ACTIVE
+  INACTIVE
+  ON_LEAVE
+  SUSPENDED
+}
+
+enum LeaveStatus {
+  PENDING
+  APPROVED
+  REJECTED
+  CANCELLED
+}
+
+enum SalaryStatus {
+  PENDING
+  PAID
+  PROCESSING
+}
+
+enum CarStatus {
+  AVAILABLE
+  IN_USE
+  MAINTENANCE
+  INACTIVE
+}
+
+enum FuelType {
+  PETROL
+  DIESEL
+  ELECTRIC
+  HYBRID
+  CNG
+}
+
+enum TransmissionType {
+  MANUAL
+  AUTOMATIC
+  AMT
+  CVT
+}
+
 model user {
   id              Int       @id @default(autoincrement())
   name            String
@@ -46,6 +88,128 @@ model user {
   deletedAt       DateTime?
   schoolId        Int?
   school          school?   @relation(fields: [schoolId], references: [id])
+  driver          driver?   @relation("UserDriver")
+}
+
+model driver {
+  id                      Int             @id @default(autoincrement())
+  userId                  Int             @unique
+  schoolId                Int
+  driverId                String          @unique
+  
+  // Personal Information
+  name                    String
+  email                   String          @unique
+  mobile                  String          @unique
+  alternatePhone          String?
+  address                 String          @db.LongText
+  dateOfBirth             DateTime
+  bloodGroup              String?
+  gender                  String
+  
+  // License Information
+  licenseNumber           String          @unique
+  licenseType             String
+  licenseIssueDate        DateTime
+  licenseExpiryDate       DateTime
+  
+  // Professional Information
+  experience              Int             @default(0)
+  joiningDate             DateTime        @default(now())
+  salary                  Float           @default(0)
+  
+  // Emergency Contact
+  emergencyContactName    String?
+  emergencyContactNumber  String?
+  emergencyContactRelation String?
+  
+  // Performance Metrics
+  totalBookings           Int             @default(0)
+  completedBookings       Int             @default(0)
+  cancelledBookings       Int             @default(0)
+  rating                  Float           @default(0.0)
+  
+  // Status
+  status                  DriverStatus    @default(ACTIVE)
+  
+  // Timestamps
+  createdAt               DateTime        @default(now())
+  updatedAt               DateTime        @updatedAt
+  deletedAt               DateTime?
+  
+  // Relations
+  user                    user            @relation("UserDriver", fields: [userId], references: [id], onDelete: Cascade)
+  school                  school          @relation(fields: [schoolId], references: [id])
+  leaveHistory            leaveHistory[]
+  salaryHistory           salaryHistory[]
+  
+  @@index([schoolId])
+  @@index([userId])
+}
+
+model leaveHistory {
+  id                Int           @id @default(autoincrement())
+  driverId          Int
+  leaveId           String        @unique
+  
+  // Leave Details
+  fromDate          DateTime
+  toDate            DateTime
+  reason            String        @db.Text
+  leaveType         String?       // SICK, CASUAL, ANNUAL, etc.
+  totalDays         Int
+  
+  // Approval Details
+  status            LeaveStatus   @default(PENDING)
+  approvedBy        Int?
+  approvedAt        DateTime?
+  rejectionReason   String?       @db.Text
+  
+  // Timestamps
+  createdAt         DateTime      @default(now())
+  updatedAt         DateTime      @updatedAt
+  
+  // Relations
+  driver            driver        @relation(fields: [driverId], references: [id], onDelete: Cascade)
+  
+  @@index([driverId])
+  @@index([status])
+}
+
+model salaryHistory {
+  id                    Int             @id @default(autoincrement())
+  driverId              Int
+  salaryId              String          @unique
+  
+  // Salary Details
+  month                 String          // Format: "November 2024"
+  year                  Int
+  monthNumber           Int             // 1-12
+  basicSalary           Float
+  bonus                 Float           @default(0)
+  deductions            Float           @default(0)
+  netSalary             Float
+  
+  // Payment Details
+  paymentMethod         String?         // CASH, BANK_TRANSFER, CHEQUE
+  transactionId         String?
+  remarks               String?         @db.Text
+  paidBy                Int?
+  paidOn                DateTime?
+  
+  // Status
+  status                SalaryStatus    @default(PENDING)
+  
+  // Timestamps
+  createdAt             DateTime        @default(now())
+  updatedAt             DateTime        @updatedAt
+  
+  // Relations
+  driver                driver          @relation(fields: [driverId], references: [id], onDelete: Cascade)
+  
+  @@unique([driverId, year, monthNumber])
+  @@index([driverId])
+  @@index([status])
 }
 
 enum SchoolStatus {
@@ -104,4 +268,260 @@ model school {
   
   // Relations
   users                   user[]
+  drivers                 driver[]
+  cars                    car[]
+  courses                 course[]
+  holidays                holiday[]
+  services                service[]
+}
+
+model car {
+  id                      Int                @id @default(autoincrement())
+  schoolId                Int
+  carId                   String             @unique
+  
+  // Basic Information
+  carName                 String
+  model                   String
+  registrationNumber      String             @unique
+  year                    Int
+  color                   String
+  
+  // Technical Specifications
+  fuelType                FuelType
+  transmission            TransmissionType
+  seatingCapacity         Int                @default(5)
+  engineNumber            String?            @unique
+  chassisNumber           String?            @unique
+  
+  // Purchase Information
+  purchaseDate            DateTime?
+  purchaseCost            Float?
+  currentMileage          Int                @default(0)
+  
+  // Documents & Compliance
+  insuranceNumber         String?
+  insuranceExpiry         DateTime?
+  pucExpiry               DateTime?
+  fitnessExpiry           DateTime?
+  
+  // Maintenance
+  lastServiceDate         DateTime?
+  nextServiceDate         DateTime?
+  
+  // Assignment
+  assignedDriverId        Int?
+  
+  // Performance Metrics
+  totalBookings           Int                @default(0)
+  
+  // Status
+  status                  CarStatus          @default(AVAILABLE)
+  
+  // Timestamps
+  createdAt               DateTime           @default(now())
+  updatedAt               DateTime           @updatedAt
+  deletedAt               DateTime?
+  
+  // Relations
+  school                  school             @relation(fields: [schoolId], references: [id])
+  holidays                holiday[]
+  
+  @@index([schoolId])
+  @@index([status])
+  @@index([assignedDriverId])
+}
+
+enum CourseType {
+  BEGINNER
+  INTERMEDIATE
+  ADVANCED
+  REFRESHER
+}
+
+enum CourseStatus {
+  ACTIVE
+  INACTIVE
+  UPCOMING
+  ARCHIVED
+}
+
+model course {
+  id                      Int                @id @default(autoincrement())
+  schoolId                Int
+  courseId                String             @unique
+  
+  // Basic Information
+  courseName              String
+  courseType              CourseType
+  hoursPerDay             Int                // 30 or 60 minutes
+  courseDays              Int                // Number of days
+  price                   Float
+  
+  // Enrollment
+  enrolledStudents        Int                @default(0)
+  
+  // Course Details
+  description             String             @db.LongText
+  syllabus                String?            @db.LongText // JSON array of topics
+  requirements            String?            @db.LongText
+  
+  // Performance Metrics
+  sessionsCompleted       Int                @default(0)
+  totalRevenue            Float              @default(0)
+  
+  // Status
+  status                  CourseStatus       @default(ACTIVE)
+  
+  // Timestamps
+  createdAt               DateTime           @default(now())
+  updatedAt               DateTime           @updatedAt
+  deletedAt               DateTime?
+  
+  // Relations
+  school                  school             @relation(fields: [schoolId], references: [id])
+  syllabusItems           syllabus[]
+  
+  @@index([schoolId])
+  @@index([status])
+  @@index([courseType])
+}
+
+model syllabus {
+  id                      Int                @id @default(autoincrement())
+  courseId                Int
+  syllabusId              String             @unique
+  
+  // Day Information
+  dayNumber               Int                // Day 1, Day 2, etc.
+  
+  // Lesson Details
+  title                   String             // e.g., "Introduction to Traffic Rules"
+  topics                  String             @db.LongText // JSON array of topics
+  
+  // Learning Objectives
+  objectives              String?            @db.LongText // JSON array of learning objectives
+  practicalActivities     String?            @db.LongText // JSON array of practical activities
+  
+  // Assessment
+  assessmentCriteria      String?            @db.LongText // JSON array of assessment criteria
+  
+  // Additional Notes
+  notes                   String?            @db.LongText
+  
+  // Timestamps
+  createdAt               DateTime           @default(now())
+  updatedAt               DateTime           @updatedAt
+  deletedAt               DateTime?
+  
+  // Relations
+  course                  course             @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  
+  @@unique([courseId, dayNumber])
+  @@index([courseId])
+  @@index([dayNumber])
+}
+
+enum ServiceType {
+  LICENSE
+  ADDON
+}
+
+enum ServiceStatus {
+  ACTIVE
+  INACTIVE
+  UPCOMING
+  DISCONTINUED
+}
+
+model service {
+  id                      Int                @id @default(autoincrement())
+  schoolId                Int
+  serviceId               String             @unique
+  
+  // Basic Information
+  serviceName             String
+  serviceType             ServiceType
+  category                String
+  
+  // Pricing & Duration
+  price                   Float
+  duration                Int                // Duration in days (validity period)
+  
+  // Service Details
+  description             String             @db.LongText
+  features                String?            @db.LongText // JSON array or newline-separated
+  includedServices        String?            @db.LongText // Comma-separated or JSON array
+  requirements            String?            @db.LongText
+  termsAndConditions      String?            @db.LongText
+  
+  // Performance Metrics
+  activeUsers             Int                @default(0)
+  totalRevenue            Float              @default(0)
+  
+  // Status
+  status                  ServiceStatus      @default(ACTIVE)
+  
+  // Timestamps
+  createdAt               DateTime           @default(now())
+  updatedAt               DateTime           @updatedAt
+  deletedAt               DateTime?
+  
+  // Relations
+  school                  school             @relation(fields: [schoolId], references: [id])
+  
+  @@index([schoolId])
+  @@index([status])
+  @@index([serviceType])
+}
+
+enum HolidayDeclarationType {
+  ALL_CARS_MULTIPLE_DATES
+  ONE_CAR_MULTIPLE_DATES
+  ALL_CARS_PARTICULAR_SLOTS
+  ONE_CAR_PARTICULAR_SLOTS
+}
+
+enum HolidayStatus {
+  ACTIVE
+  EXPIRED
+  UPCOMING
+  CANCELLED
+}
+
+model holiday {
+  id                      Int                       @id @default(autoincrement())
+  schoolId                Int
+  
+  // Declaration Details
+  declarationType         HolidayDeclarationType
+  carId                   Int?
+  
+  // Date Range
+  startDate               DateTime
+  endDate                 DateTime
+  
+  // Time Slots (for particular slots types)
+  slots                   String?                   @db.LongText // JSON array of time slots
+  
+  // Reason
+  reason                  String                    @db.Text
+  
+  // Status
+  status                  HolidayStatus             @default(ACTIVE)
+  
+  // Timestamps
+  createdAt               DateTime                  @default(now())
+  updatedAt               DateTime                  @updatedAt
+  deletedAt               DateTime?
+  
+  // Relations
+  school                  school                    @relation(fields: [schoolId], references: [id])
+  car                     car?                      @relation(fields: [carId], references: [id])
+  
+  @@index([schoolId])
+  @@index([carId])
+  @@index([status])
+  @@index([startDate])
+  @@index([endDate])
 }

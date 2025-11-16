@@ -76,4 +76,10 @@ export class CreateUserInput {
     nullable: true,
   })
   status: Status;
+
+  @IsOptional()
+  @Field(() => Number, {
+    nullable: true,
+  })
+  schoolId?: number;
 }

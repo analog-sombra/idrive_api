@@ -14,6 +14,14 @@ import { AuthModule } from './auth/auth.module';
 import { UserModule } from './user/user.module';
 import { UploaderModule } from './uploader/uploader.module';
 import { SchoolModule } from './school/school.module';
+import { DriverModule } from './driver/driver.module';
+import { LeaveHistoryModule } from './leave-history/leave-history.module';
+import { SalaryHistoryModule } from './salary-history/salary-history.module';
+import { CarModule } from './car/car.module';
+import { CourseModule } from './course/course.module';
+import { SyllabusModule } from './syllabus/syllabus.module';
+import { HolidayModule } from './holiday/holiday.module';
+import { ServiceModule } from './service/service.module';
 
 @Module({
   imports: [
@@ -49,6 +57,14 @@ import { SchoolModule } from './school/school.module';
     AuthModule,
     UserModule,
     SchoolModule,
+    DriverModule,
+    LeaveHistoryModule,
+    SalaryHistoryModule,
+    CarModule,
+    CourseModule,
+    SyllabusModule,
+    HolidayModule,
+    ServiceModule,
   ],
   controllers: [AppController],
   providers: [AppService],

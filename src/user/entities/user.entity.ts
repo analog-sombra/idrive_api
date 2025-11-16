@@ -1,5 +1,6 @@
 import { ObjectType, Field, Int, registerEnumType } from '@nestjs/graphql';
 import { Role, Status } from '@prisma/client';
+import { School } from 'src/school/entities/school.entity';
 
 registerEnumType(Role, {
   name: 'Role',
@@ -71,4 +72,10 @@ export class User {
 
   @Field(() => User, { nullable: true })
   deletedBy: User;
+
+  @Field(() => Int, { nullable: true })
+  schoolId?: number;
+
+  @Field(() => School, { nullable: true })
+  school?: string;
 }
